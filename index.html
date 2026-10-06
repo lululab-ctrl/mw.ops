@@ -1,0 +1,1032 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>השולחן של אמיליה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&family=Montserrat:wght@600;700&display=swap">
+<style>
+/* Layout: dark brand band with live counts, then a tabbed work surface (Today / Leads / Tasks / Tours) on cream. */
+:root{
+  --band:#0C2925; --band-fg:#FEFBF1; --band-muted:#B9C8CD;
+  --bg:#FEFBF1; --surface:#FFFFFF; --sand:#EBE7DE; --line:#E3DED2;
+  --fg:#0A0908; --muted:#55666B;
+  --accent:#023C4C; --accent-fg:#FEFBF1; --accent-soft:#E2ECEE;
+  --warn:#B2620F; --warn-soft:#FBEBD7; --crit:#A8391F; --crit-soft:#F8E1D9;
+  --ok:#2F6B47; --ok-soft:#E0EEE4; --violet:#5E4596; --violet-soft:#ECE6F6;
+  --shadow:0 10px 30px rgba(12,41,37,.08);
+  --f-body:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --f-brand:"Montserrat","Heebo",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --band:#071A17; --band-fg:#F3F0E6; --band-muted:#93A7AC;
+  --bg:#0E1716; --surface:#16211F; --sand:#1E2B29; --line:#26332F;
+  --fg:#EEEBE2; --muted:#9AAAA9;
+  --accent:#7FB8C6; --accent-fg:#06201D; --accent-soft:#1C3236;
+  --warn:#E7A45A; --warn-soft:#3A2A16; --crit:#EE8F74; --crit-soft:#3B201A;
+  --ok:#86C59C; --ok-soft:#18301F; --violet:#B9A4EA; --violet-soft:#2A2440;
+  --shadow:0 10px 30px rgba(0,0,0,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --band:#071A17; --band-fg:#F3F0E6; --band-muted:#93A7AC;
+  --bg:#0E1716; --surface:#16211F; --sand:#1E2B29; --line:#26332F;
+  --fg:#EEEBE2; --muted:#9AAAA9;
+  --accent:#7FB8C6; --accent-fg:#06201D; --accent-soft:#1C3236;
+  --warn:#E7A45A; --warn-soft:#3A2A16; --crit:#EE8F74; --crit-soft:#3B201A;
+  --ok:#86C59C; --ok-soft:#18301F; --violet:#B9A4EA; --violet-soft:#2A2440;
+  --shadow:0 10px 30px rgba(0,0,0,.35); color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
+
+/* band */
+.band{background:var(--band);color:var(--band-fg);padding-block:22px 74px}
+.band-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-family:var(--f-brand);font-weight:700;font-size:12px;letter-spacing:.32em}
+.sync{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--band-muted)}
+.btn-ghost-light{background:rgba(254,251,241,.1);color:var(--band-fg);border:1px solid rgba(254,251,241,.18);border-radius:999px;padding:8px 14px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;min-height:40px}
+.btn-ghost-light:hover{background:rgba(254,251,241,.18)}
+.lang-btn{font-weight:700;font-size:13px}
+.hello{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-top:30px}
+.hello .date{color:var(--band-muted);font-size:15px}
+.hello h1{margin:4px 0 0;font-size:clamp(32px,5vw,50px);font-weight:300;line-height:1.1;text-wrap:balance}
+.hello h1 b{font-weight:700}
+.stats{display:flex;gap:28px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;min-width:76px}
+.stat .n{font-size:34px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .l{font-size:13px;color:var(--band-muted)}
+
+/* tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:-52px;margin-bottom:20px}
+.tab{border:none;background:rgba(254,251,241,.1);color:var(--band-fg);border-radius:999px;padding:10px 18px;min-height:44px;cursor:pointer;font-size:15px;display:inline-flex;gap:8px;align-items:center}
+.tab[aria-selected="true"]{background:var(--bg);color:var(--fg);font-weight:700}
+.tab .cnt{font-size:12px;background:rgba(254,251,241,.16);border-radius:999px;padding:1px 8px;font-variant-numeric:tabular-nums}
+.tab[aria-selected="true"] .cnt{background:var(--accent-soft);color:var(--accent)}
+
+main{padding-bottom:80px}
+.panel{display:flex;flex-direction:column;gap:22px}
+.card{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:24px}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+h2{margin:0;font-size:24px;font-weight:300}
+h2 b{font-weight:700}
+h3{margin:0;font-size:16px;font-weight:700}
+.sub{color:var(--muted);font-size:14px}
+.grid2{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+.grid2>.main{flex:999 1 560px;min-width:0}
+.grid2>.side{flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:22px}
+
+/* rows */
+.list{display:flex;flex-direction:column}
+.row{display:flex;gap:14px;align-items:flex-start;padding-block:16px;border-top:1px solid var(--line);flex-wrap:wrap}
+.row:first-child{border-top:none;padding-top:4px}
+.row.flash{animation:flash 1.6s ease}
+@keyframes flash{0%{background:var(--accent-soft)}100%{background:transparent}}
+.dot{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;border:1.5px solid var(--accent);color:var(--accent)}
+.dot.warn{border-color:var(--warn);color:var(--warn)}
+.dot.crit{border-color:var(--crit);color:var(--crit)}
+.dot svg{width:20px;height:20px}
+.body{flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:3px}
+.name{font-size:17px;font-weight:700;overflow-wrap:anywhere}
+.meta{font-size:14px;color:var(--muted);overflow-wrap:anywhere}
+.contact{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.chipbtn{display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:6px 10px;border-radius:999px;background:var(--sand);color:var(--fg);border:none;cursor:pointer;text-decoration:none;min-height:34px;font-variant-numeric:tabular-nums;direction:ltr}
+.chipbtn:hover{background:var(--accent-soft)}
+.chipbtn svg{width:15px;height:15px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--accent);background:transparent;color:var(--accent);border-radius:999px;padding:9px 16px;min-height:42px;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;gap:6px;text-decoration:none;white-space:nowrap}
+.btn:hover{background:var(--accent-soft)}
+.btn.primary{background:var(--accent);color:var(--accent-fg);font-weight:700}
+.btn.primary:hover{filter:brightness(1.1)}
+.btn.quiet{border-color:transparent;color:var(--muted)}
+.btn:disabled{opacity:.5;cursor:progress}
+.pill{display:inline-flex;align-items:center;font-size:12px;border-radius:999px;padding:3px 10px;white-space:nowrap;font-weight:500}
+.p-new{background:var(--sand);color:var(--fg)}
+.p-att{background:var(--warn-soft);color:var(--warn)}
+.p-con{background:var(--accent-soft);color:var(--accent)}
+.p-fu{background:var(--crit-soft);color:var(--crit)}
+.p-brief{background:var(--violet-soft);color:var(--violet)}
+.p-ok{background:var(--ok-soft);color:var(--ok)}
+.age-hot{color:var(--crit);font-weight:500}
+.views{display:flex;gap:8px;flex-wrap:wrap}
+.view{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:8px 14px;min-height:42px;cursor:pointer;display:inline-flex;gap:8px;align-items:center;font-size:14px}
+.view b{font-variant-numeric:tabular-nums}
+.view[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.view.hot b{color:var(--crit)}.view.hot[aria-pressed="true"] b{color:var(--accent-fg)}
+.lead{padding-block:0;flex-direction:column;gap:0}
+.lead-sum{all:unset;box-sizing:border-box;display:flex;gap:12px;align-items:center;width:100%;padding-block:12px;cursor:pointer;border-radius:10px}
+.lead-sum:hover .name{color:var(--accent)}
+.lead-sum:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lead-sum .dot{width:34px;height:34px}.lead-sum .dot svg{width:17px;height:17px}
+.lead-sum .body{flex:1 1 auto;gap:1px}
+.lead-sum .name{font-size:16px}
+.lead-sum .why{font-size:14px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.why .crit{color:var(--crit);font-weight:500}.why .warn{color:var(--warn);font-weight:500}
+.chev{flex:none;width:20px;height:20px;color:var(--muted);transition:transform .15s}
+.lead-sum[aria-expanded="true"] .chev{transform:rotate(-90deg)}
+[dir=ltr] .chev{transform:scaleX(-1)}[dir=ltr] .lead-sum[aria-expanded="true"] .chev{transform:rotate(90deg) scaleX(-1)}
+.lead-more{display:flex;flex-direction:column;gap:10px;padding-block:0 16px;padding-inline:46px 0}
+.lead-more .meta{font-size:13px}
+.camps{display:flex;flex-direction:column;gap:12px}
+.camp-list{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.camp{display:inline-flex;align-items:center;gap:8px;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding-block:6px;padding-inline:14px 6px;font-size:14px;font-weight:500}
+.camp button{border:none;background:transparent;color:inherit;cursor:pointer;border-radius:999px;width:30px;height:30px;display:grid;place-items:center}
+.camp button:hover{background:var(--surface)}
+.camp-form{display:flex;gap:8px;flex-wrap:wrap}
+.camp-form input{border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:9px 12px;min-height:44px;flex:1 1 200px;min-width:0}
+.camp-dates{display:flex;gap:8px;flex-wrap:wrap}
+.camp-date{background:var(--sand);border-radius:12px;padding:8px 12px;font-size:13px;display:flex;flex-direction:column;font-variant-numeric:tabular-nums}
+.camp-date b{font-size:15px}
+.mood{margin-top:12px;display:inline-flex;gap:10px;align-items:center;background:rgba(254,251,241,.1);border-radius:999px;padding-block:6px;padding-inline:8px 14px;font-size:14px;color:var(--band-fg)}
+.mood .ring{width:30px;height:30px;flex:none}
+.mood .ring circle{fill:none;stroke-width:3.5}
+.mood .ring .trk{stroke:rgba(254,251,241,.18)}.mood .ring .val{stroke:#F4AF56;stroke-linecap:round;transition:stroke-dashoffset .5s}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kpi{background:var(--surface);border-radius:16px;padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:2px}
+.kpi .n{font-size:32px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.15}
+.kpi .l{font-size:13px;color:var(--muted)}
+.bars{display:flex;flex-direction:column;gap:12px}
+.bar-row{display:grid;grid-template-columns:minmax(120px,220px) minmax(0,1fr) auto;gap:12px;align-items:center}
+.bar-row .lbl{font-size:14px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-row .lbl small{display:block;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.track{height:14px;border-radius:4px;background:var(--sand);position:relative;overflow:hidden}
+.fill{position:absolute;inset-block:0;inset-inline-start:0;background:var(--accent);border-radius:4px}
+.fill.over{background:var(--crit)}
+.bar-row .val{font-size:13px;font-variant-numeric:tabular-nums;display:flex;gap:8px;align-items:center;white-space:nowrap}
+.cols{display:flex;align-items:flex-end;gap:8px;height:150px;padding-top:18px;border-bottom:1px solid var(--line)}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%;min-width:0}
+.col .c{width:100%;max-width:36px;background:var(--accent);border-radius:4px 4px 0 0;min-height:2px}
+.col .c.now{background:#DA7D2B}
+.col .v{font-size:12px;font-variant-numeric:tabular-nums;color:var(--fg)}
+.col-lbls{display:flex;gap:8px;margin-top:6px}.col-lbls span{flex:1;text-align:center;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.faq details{border-top:1px solid var(--line);padding-block:4px}
+.faq details:first-of-type{border-top:none}
+.faq summary{cursor:pointer;font-weight:700;padding-block:12px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--muted);font-weight:400;font-size:20px;line-height:1}
+.faq details[open] summary::after{content:"–"}
+.faq p,.faq ul{margin:0 0 12px;color:var(--fg);line-height:1.7;max-width:68ch}
+.faq ul{padding-inline-start:20px}
+.hint{font-size:13px;color:var(--muted);background:var(--sand);border-radius:12px;padding:10px 14px}
+.fu-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;width:100%;padding-inline-start:54px}
+.fu-row input{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 10px;min-height:42px}
+
+/* pipeline */
+.pipe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:2px;cursor:pointer;text-align:start;border-bottom-width:3px}
+.stage .n{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}
+.stage .l{font-size:13px;color:var(--muted)}
+.stage[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.stage[aria-pressed="true"] .l{color:var(--accent-fg)}
+.s-new{border-bottom-color:#9CA8A6}.s-att{border-bottom-color:var(--warn)}.s-con{border-bottom-color:var(--accent)}.s-fu{border-bottom-color:var(--crit)}.s-brief{border-bottom-color:var(--violet)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search{flex:1 1 220px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:10px 16px;min-height:44px}
+
+/* tasks */
+.task{display:flex;gap:12px;align-items:flex-start;padding-block:12px;border-top:1px solid var(--line)}
+.task:first-child{border-top:none}
+.task input[type=checkbox]{width:22px;height:22px;margin:2px 0 0;accent-color:var(--accent);flex:none;cursor:pointer}
+.task .t{font-size:15px;overflow-wrap:anywhere}
+.task .m{font-size:13px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.task.done .t{text-decoration:line-through;color:var(--muted)}
+.late{color:var(--crit);font-weight:500}
+.addtask{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.addtask input,.addtask select{border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:9px 12px;min-height:44px}
+.addtask input[type=text]{flex:1 1 220px;min-width:0}
+
+/* tours */
+.tours{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.tour{background:var(--surface);border-radius:18px;padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+.tour.soon{outline:2px solid var(--warn);outline-offset:-2px}
+.tour-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.tour .when{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tour .tname{font-size:19px;font-weight:700;line-height:1.25}
+.seats{display:flex;gap:3px}
+.seats span{flex:1;height:7px;border-radius:4px;background:var(--sand)}
+.seats span.on{background:var(--accent)}
+.seats span.over{background:var(--crit)}
+.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;font-size:13px}
+.ck{display:flex;gap:6px;align-items:center;font-variant-numeric:tabular-nums}
+.ck i{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
+.ck.miss i{background:var(--warn)}
+.ck.miss{color:var(--warn);font-weight:500}
+
+/* claude */
+.ask{background:var(--sand);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--f-brand);font-size:11px;letter-spacing:.24em;color:var(--muted);font-weight:600}
+.ask textarea{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:12px 14px;min-height:80px;resize:vertical}
+.answer{white-space:pre-wrap;background:var(--surface);border-radius:14px;padding:14px;font-size:14px;line-height:1.7}
+
+/* states */
+.note{border-radius:14px;padding:14px 16px;font-size:14px;display:flex;gap:10px;align-items:flex-start}
+.note.err{background:var(--crit-soft);color:var(--crit)}
+.note.info{background:var(--accent-soft);color:var(--accent)}
+.empty{color:var(--muted);font-size:14px;padding-block:12px}
+.skel{height:56px;border-radius:12px;background:linear-gradient(90deg,var(--sand),var(--bg),var(--sand));background-size:200% 100%;animation:sk 1.4s infinite linear;margin-block:8px}
+@keyframes sk{to{background-position:-200% 0}}
+.more{align-self:flex-start}
+
+/* modal */
+.scrim{position:fixed;inset:0;background:rgba(5,15,13,.55);display:grid;place-items:center;padding:16px;z-index:20}
+.modal{background:var(--surface);border-radius:20px;width:min(620px,100%);max-height:92vh;overflow:auto;padding:24px;display:flex;flex-direction:column;gap:12px}
+.modal label{font-size:13px;color:var(--muted)}
+.modal input,.modal textarea{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 12px}
+.modal textarea{min-height:220px;line-height:1.6;resize:vertical}
+.field{display:flex;flex-direction:column;gap:4px}
+.lang-row{display:flex;gap:8px;flex-wrap:wrap}
+.toast{position:fixed;inset-inline:0;bottom:calc(18px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;pointer-events:none;z-index:30;padding-inline:16px}
+.toast div{pointer-events:auto;background:var(--fg);color:var(--bg);border-radius:999px;padding:10px 12px 10px 18px;display:flex;gap:12px;align-items:center;box-shadow:var(--shadow);font-size:14px;max-width:100%}
+.toast button{background:transparent;border:1px solid currentColor;color:inherit;border-radius:999px;padding:4px 12px;cursor:pointer;min-height:32px}
+.toast a{color:inherit;font-weight:700}
+
+@media (max-width:760px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bar-row{grid-template-columns:minmax(0,1fr) auto}.bar-row .track{grid-column:1/-1;grid-row:2}
+  .lead-more{padding-inline-start:0}
+  .pipe{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stats{gap:18px}.stat .n{font-size:28px}
+  .card{padding:18px}
+  .fu-row{padding-inline-start:0}
+}
+@media (max-width:420px){.pipe{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div id="app" dir="rtl" lang="he">
+<header class="band">
+  <div class="wrap">
+    <div class="band-top">
+      <div class="brand">MW PHOTO TOURS</div>
+      <div class="sync">
+        <span id="syncText">מתחבר…</span>
+        <button class="btn-ghost-light" id="refreshBtn" type="button" aria-label="רענון נתונים" data-en-al="Refresh data">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>
+          <span data-en="Refresh">רענון</span>
+        </button>
+        <button class="btn-ghost-light lang-btn" id="langBtn" type="button" lang="en" aria-label="Switch to English">English</button>
+      </div>
+    </div>
+    <div class="hello">
+      <div>
+        <div class="date" id="todayText"></div>
+        <h1><span id="greet">שלום</span>, <b data-en="Emilia">אמיליה</b></h1>
+        <div class="mood" id="mood" aria-live="polite"></div>
+      </div>
+      <div class="stats" aria-live="polite">
+        <div class="stat"><span class="n" id="stNew">–</span><span class="l" data-en="New in campaign">חדשים בקמפיין</span></div>
+        <div class="stat"><span class="n" id="stFu">–</span><span class="l" data-en="Follow-ups today">פולואפים להיום</span></div>
+        <div class="stat"><span class="n" id="stTasks">–</span><span class="l" data-en="Open tasks">משימות פתוחות</span></div>
+        <div class="stat"><span class="n" id="stTour">–</span><span class="l" id="stTourL" data-en="Days to next tour">ימים ליציאה הקרובה</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="tabs" role="tablist" aria-label="אזורי עבודה" data-en-al="Work areas">
+    <button class="tab" role="tab" id="tab-today" data-tab="today" aria-selected="true" type="button"><span data-en="Today">היום</span> <span class="cnt" id="cToday">0</span></button>
+    <button class="tab" role="tab" id="tab-leads" data-tab="leads" aria-selected="false" type="button"><span data-en="Leads">לידים</span> <span class="cnt" id="cLeads">0</span></button>
+    <button class="tab" role="tab" id="tab-tasks" data-tab="tasks" aria-selected="false" type="button"><span data-en="Tasks">משימות</span> <span class="cnt" id="cTasks">0</span></button>
+    <button class="tab" role="tab" id="tab-tours" data-tab="tours" aria-selected="false" type="button" data-en="Tours &amp; registrations">מסעות והרשמות</button>
+    <button class="tab" role="tab" id="tab-sales" data-tab="sales" aria-selected="false" type="button" data-en="Sales">מכירות</button>
+    <button class="tab" role="tab" id="tab-help" data-tab="help" aria-selected="false" type="button" data-en="How it works">איך עובדים</button>
+  </nav>
+
+  <main>
+    <div id="globalNote"></div>
+
+    <!-- TODAY -->
+    <section class="panel" id="panel-today" role="tabpanel" aria-labelledby="tab-today">
+      <div class="grid2">
+        <div class="main card">
+          <div class="sec-head"><h2 data-en="What&#39;s on <b>today</b>">מה <b>היום</b></h2><button class="btn quiet" type="button" data-goto="leads" data-view-set="urgent" data-en="All urgent">כל הדחופים</button></div>
+          <div class="list" id="todayList"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+        </div>
+        <div class="side">
+          <div class="card">
+            <div class="sec-head"><h3 data-en="Tasks waiting for me">משימות שמחכות לי</h3><button class="btn quiet" type="button" data-goto="tasks" data-en="All">הכול</button></div>
+            <div id="todayTasks"><div class="skel"></div></div>
+          </div>
+          <div class="ask">
+            <div class="eyebrow">CLAUDE</div>
+            <label for="askInput" class="name" data-en="What can I do for you?">מה לעשות בשבילך?</label>
+            <textarea id="askInput" placeholder="למשל: מה פתוח עם הנרשמים לאיסלנד?" data-en-ph="e.g. What&#39;s still open with the Iceland registrants?"></textarea>
+            <div class="actions"><button class="btn primary" type="button" id="askBtn" data-en="Ask Claude">שאלי את Claude</button><span class="sub" data-en="Claude sees what&#39;s shown on this page">Claude רואה את מה שמוצג בדף</span></div>
+            <div class="answer" id="askOut" hidden></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEADS -->
+    <section class="panel" id="panel-leads" role="tabpanel" aria-labelledby="tab-leads" hidden>
+      <div class="sec-head"><h2 data-en="The road to <b>registration</b>">הדרך <b>להרשמה</b></h2><span class="sub" data-en="Urgent first: follow-ups that are due, then leads from the active campaign">הדחופים קודם: פולואפים שהגיע זמנם, ואז לידים מהקמפיין הפעיל</span></div>
+      <div class="card camps">
+        <div class="sec-head"><h3 data-en="Active campaigns">קמפיינים פעילים</h3><button class="btn quiet" type="button" data-act="campedit" aria-expanded="false">עריכה</button></div>
+        <div class="camp-list" id="campList"><span class="sub">טוען…</span></div>
+        <form class="camp-form" id="campForm" hidden>
+          <input id="campName" type="text" placeholder="שם הקמפיין, למשל: ים המלח עם משה ברנשטיין" aria-label="שם הקמפיין" data-en-ph="Campaign name, e.g. Dead Sea with Moshe Bernstein" data-en-al="Campaign name" required maxlength="80">
+          <input id="campKeys" type="text" placeholder="מילים לזיהוי, מופרדות בפסיק: ים המלח, Dead Sea" aria-label="מילים לזיהוי" data-en-ph="Keywords, comma-separated: Dead Sea, ים המלח" data-en-al="Keywords" required maxlength="300">
+          <button class="btn primary" type="submit" data-en="Add campaign">הוספת קמפיין</button>
+        </form>
+        <div class="sub" data-en="To add the next campaign: click &quot;Edit&quot;, type a name and a few words that identify it, and it moves into focus. The setting is shared, so Matan and Emilia always see the same campaigns.">להוספת הקמפיין הבא: לוחצים "עריכה", כותבים שם וכמה מילים שמזהות אותו, והוא עובר לפוקוס. ההגדרה משותפת, כך שמתן ואמיליה רואים תמיד את אותם קמפיינים.</div>
+        <div class="sub" id="campHelp" hidden data-en="A lead belongs to a campaign if one of the words appears in its &quot;Interested in&quot; field or lead source. A tour belongs to a campaign if one of the words appears in its name in monday. The change is saved for everyone using this page.">ליד שייך לקמפיין אם אחת המילים מופיעה בשדה "Interested in" או במקור הליד. מסע שייך לקמפיין אם אחת המילים מופיעה בשם שלו ב-monday. השינוי נשמר לכל מי שמשתמש בדף.</div>
+      </div>
+      <div class="views" id="views" role="group" aria-label="תצוגת לידים" data-en-al="Lead views"></div>
+      <div class="card">
+        <div class="toolbar">
+          <input class="search" id="leadSearch" type="search" placeholder="חיפוש לפי שם, טלפון, מייל או מסע" aria-label="חיפוש לידים" data-en-ph="Search by name, phone, email or tour" data-en-al="Search leads">
+          <span class="sub" id="leadCount"></span>
+        </div>
+        <div class="list" id="leadList" style="margin-top:8px"><div class="skel"></div><div class="skel"></div></div>
+      </div>
+    </section>
+
+    <!-- TASKS -->
+    <section class="panel" id="panel-tasks" role="tabpanel" aria-labelledby="tab-tasks" hidden>
+      <div class="card">
+        <div class="sec-head"><h2 data-en="My <b>tasks</b>">המשימות <b>שלי</b></h2><a class="sub" href="https://matanwildphotography.monday.com/boards/5105131079" target="_blank" rel="noopener" data-en="Open the board in monday">פתיחת הבורד ב-monday</a></div>
+        <form class="addtask" id="addTask">
+          <input type="text" id="newTaskName" placeholder="משימה חדשה" aria-label="שם המשימה" data-en-ph="New task" data-en-al="Task name" required maxlength="200">
+          <input type="date" id="newTaskDate" aria-label="תאריך יעד" data-en-al="Due date">
+          <select id="newTaskPri" aria-label="עדיפות" data-en-al="Priority"><option value="רגילה" data-en="Normal">רגילה</option><option value="גבוהה" data-en="High">גבוהה</option><option value="נמוכה" data-en="Low">נמוכה</option></select>
+          <button class="btn primary" type="submit" data-en="Add">הוספה</button>
+        </form>
+        <div id="taskList" style="margin-top:12px"><div class="skel"></div></div>
+      </div>
+    </section>
+
+    <!-- SALES -->
+    <section class="panel" id="panel-sales" role="tabpanel" aria-labelledby="tab-sales" hidden>
+      <div class="sec-head"><h2 data-en="Sales <b>snapshot</b>">תמונת <b>מכירות</b></h2><span class="sub" data-en="Registrations and occupancy from monday · updates on refresh">הרשמות ותפוסה מתוך monday · מתעדכן עם הרענון</span></div>
+      <div class="kpis" id="kpis"><div class="skel"></div></div>
+      <div class="grid2">
+        <div class="main card">
+          <div class="sec-head"><h3 data-en="Occupancy in upcoming tours">תפוסה במסעות הקרובים</h3><span class="sub" data-en="Registrants out of capacity">נרשמים מתוך הקיבולת</span></div>
+          <div class="bars" id="fillBars" style="margin-top:14px"><div class="skel"></div></div>
+        </div>
+        <div class="side">
+          <div class="card">
+            <h3 data-en="Registrations by week">הרשמות לפי שבוע</h3>
+            <div class="sub" data-en="Last 8 weeks · current week in orange">8 השבועות האחרונים · השבוע הנוכחי בכתום</div>
+            <div id="weekly"><div class="skel"></div></div>
+          </div>
+          <div class="card">
+            <h3 id="funnelTitle">הקמפיין הפעיל</h3>
+            <div class="bars" id="funnel" style="margin-top:12px"><div class="skel"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HELP -->
+    <section class="panel" id="panel-help" role="tabpanel" aria-labelledby="tab-help" hidden>
+      <div class="card faq">
+        <div class="sec-head" style="margin-bottom:6px"><h2 data-en="How to <b>work</b> with the desk">איך <b>עובדים</b> עם השולחן</h2></div>
+        <details open><summary data-en="Where do I start each morning?">מאיפה מתחילים כל בוקר?</summary>
+          <ul data-en="<li>Open &quot;Today&quot;. The urgent leads are at the top, most urgent first.</li><li>Go through them in order: call, then click what happened.</li><li>Then glance at &quot;Tasks waiting for me&quot; and at tours departing soon.</li>"><li>פותחים את "היום". למעלה מופיעים הלידים הדחופים, מהדחוף ביותר.</li><li>עוברים עליהם לפי הסדר: מתקשרים, ואז לוחצים מה קרה.</li><li>אחר כך מעיפים מבט ב"משימות שמחכות לי" ובמסעות שיוצאים בקרוב.</li></ul></details>
+        <details><summary data-en="What goes into &quot;Urgent now&quot;?">מה נכנס לרשימת "דחוף עכשיו"?</summary>
+          <ul data-en="<li>Follow-ups that are due, most overdue first.</li><li>Leads from the active campaign we haven&#39;t spoken to yet. Whoever has waited longest comes first.</li><li>Campaign leads we tried who didn&#39;t answer, after two days without an update.</li>"><li>פולואפים שהגיע זמנם, מהמאחר ביותר.</li><li>לידים מהקמפיין הפעיל שעוד לא דיברנו איתם. מי שמחכה הכי הרבה זמן מופיע ראשון.</li><li>לידים מהקמפיין שניסינו ולא ענו, אחרי יומיים בלי עדכון.</li></ul>
+          <p data-en="Landing page leads and Rav-Messer contacts don&#39;t go into urgent. They&#39;re in the &quot;Not in focus&quot; tab.">לידים מדף הנחיתה ואנשי קשר מרב-מסר לא נכנסים לדחופים. הם בלשונית "לא בפוקוס".</p></details>
+        <details><summary data-en="What does each lead button do?">מה עושה כל כפתור בליד?</summary>
+          <ul data-en="<li><b>No answer:</b> the status in monday changes to &quot;Attempted&quot; and a follow-up is set for tomorrow.</li><li><b>We spoke:</b> the status changes to &quot;Contacted&quot;.</li><li><b>Follow-up:</b> pick a date, and the lead returns to urgent on that day.</li><li><b>Draft email:</b> saved in Gmail, not sent. Read to the end, fix, and send from there.</li><li><b>monday:</b> opens the full lead.</li>"><li><b>לא ענה:</b> הסטטוס ב-monday עובר ל"ניסיתי להשיג" ונקבע פולואפ למחר.</li><li><b>דיברנו:</b> הסטטוס עובר ל"דיברנו".</li><li><b>פולואפ:</b> בוחרים תאריך, והליד חוזר לדחופים ביום הזה.</li><li><b>טיוטת מייל:</b> נשמרת ב-Gmail ולא נשלחת. קוראים עד הסוף, מתקנים ושולחים משם.</li><li><b>monday:</b> פותח את הליד המלא.</li></ul>
+          <p data-en="Every action is also logged as an update on the lead in monday. Clicked by mistake? There&#39;s &quot;Undo&quot; in the message that pops up at the bottom.">כל פעולה נרשמת גם כהערה על הליד ב-monday. לחצת בטעות? יש "ביטול" בהודעה שקופצת למטה.</p></details>
+        <details><summary data-en="How do I add or end a campaign?">איך מוסיפים או מסיימים קמפיין?</summary>
+          <p data-en="In the &quot;Leads&quot; tab, in the &quot;Active campaigns&quot; box, click &quot;Edit&quot;. Type a name and a few words that identify it, comma-separated (e.g. Dead Sea, ים המלח), and it moves into focus. The setting is shared, so Matan and Emilia always see the same campaigns. When a campaign ends, click &quot;Edit&quot; and remove it with the X.">בלשונית "לידים", בתיבה "קמפיינים פעילים", לוחצים "עריכה". כותבים שם וכמה מילים שמזהות אותו, מופרדות בפסיק (למשל: ים המלח, Dead Sea), והוא עובר לפוקוס. ההגדרה משותפת, כך שמתן ואמיליה רואים תמיד את אותם קמפיינים. כשקמפיין נגמר, לוחצים "עריכה" ומסירים אותו ב-X.</p></details>
+        <details><summary data-en="What goes to clients, and what needs approval?">מה שולחים ללקוח ומה צריך אישור?</summary>
+          <ul data-en="<li>No email goes out without reading it to the end.</li><li>Prices, terms, discounts and payment changes: only after Matan approves.</li><li>Tour facts (dates, places, price) come from monday and the final booklet, not from memory.</li>"><li>שום מייל לא יוצא בלי שקוראים אותו עד הסוף.</li><li>מחירים, תנאים, הנחות ושינויים בתשלום: רק אחרי אישור של מתן.</li><li>עובדות על מסע (תאריכים, מקומות, מחיר) לוקחים מ-monday ומהחוברת הסופית, לא מהזיכרון.</li></ul></details>
+        <details><summary data-en="What do the marks on tours mean?">מה המשמעות של הסימנים במסעות?</summary>
+          <p data-en="Each tour shows how many registered out of capacity, and what&#39;s missing: agreement, insurance, flights, WhatsApp and prep page. Missing items turn orange as departure approaches, and a tour departing within 45 days gets a frame.">כל מסע מראה כמה נרשמו מתוך הקיבולת, ומה חסר: הסכם, ביטוח, טיסות, וואטסאפ ודף הכנה. מה שחסר מסומן בכתום כשהיציאה מתקרבת, ומסע שיוצא בתוך 45 יום מקבל מסגרת.</p></details>
+        <details><summary data-en="What&#39;s in the &quot;Sales&quot; tab?">מה רואים בלשונית "מכירות"?</summary>
+          <p data-en="How many registered in the last week and month, how many seats are still open in tours in the next 90 days, occupancy per tour, and how many campaign leads have already progressed. A tour departing within 45 days at under half capacity is marked &quot;Needs a push&quot;.">כמה נרשמו בשבוע ובחודש האחרונים, כמה מקומות עוד פנויים במסעות של 90 הימים הקרובים, תפוסה לכל מסע, וכמה מלידי הקמפיין כבר התקדמו. מסע שיוצא בתוך 45 יום עם פחות מחצי תפוסה מסומן "צריך דחיפה".</p></details>
+        <details><summary data-en="Something isn&#39;t working. What do I do?">משהו לא עובד. מה עושים?</summary>
+          <ul data-en="<li>Click &quot;Refresh&quot; at the top.</li><li>If it says monday or Gmail needs connecting: in Claude go to Settings → Connectors and reconnect.</li><li>If it still doesn&#39;t work, write to Matan what&#39;s on the screen.</li>"><li>לוחצים "רענון" למעלה.</li><li>אם כתוב שצריך לחבר את monday או את Gmail: ב-Claude נכנסים להגדרות ← Connectors ומחברים מחדש.</li><li>אם זה עדיין לא עובד, כותבים למתן מה מופיע על המסך.</li></ul></details>
+        <details><summary data-en="Can I ask Claude?">אפשר לשאול את Claude?</summary>
+          <p data-en="Yes, in the &quot;What can I do for you?&quot; box in the &quot;Today&quot; tab. Claude sees what&#39;s shown on the page (leads, tasks and tours) and answers only from that.">כן, בתיבה "מה לעשות בשבילך?" בלשונית "היום". Claude רואה את מה שמוצג בדף (לידים, משימות ומסעות) ועונה רק לפי זה.</p></details>
+      </div>
+    </section>
+
+    <!-- TOURS -->
+    <section class="panel" id="panel-tours" role="tabpanel" aria-labelledby="tab-tours" hidden>
+      <div class="sec-head"><h2 data-en="Tours <b>&amp; registrations</b>">מסעות <b>והרשמות</b></h2><span class="sub" data-en="Seats and documents from Tours &amp; Logistics">מקומות ומסמכים מתוך Tours &amp; Logistics</span></div>
+      <div class="tours" id="tourList"><div class="skel"></div></div>
+    </section>
+  </main>
+</div>
+
+<!-- composer -->
+<div class="scrim" id="composer" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="compTitle">
+    <div class="sec-head"><h3 id="compTitle">טיוטת מייל</h3><button class="btn quiet" type="button" id="compClose" aria-label="סגירה" data-en-al="Close" data-en="Close">סגירה</button></div>
+    <div class="note info" data-en="The draft is saved in Gmail and not sent. Read it to the end, fix it, and send from there.">הטיוטה נשמרת ב-Gmail ולא נשלחת. קוראים עד הסוף, מתקנים ושולחים משם.</div>
+    <div class="field"><label for="compTo" data-en="To">אל</label><input id="compTo" type="email" dir="ltr"></div>
+    <div class="field"><label for="compSubj" data-en="Subject">נושא</label><input id="compSubj" type="text"></div>
+    <div class="field"><label for="compBody" data-en="Message">תוכן</label><textarea id="compBody"></textarea></div>
+    <div class="actions">
+      <button class="btn" type="button" id="compAi" data-en="Draft with Claude">נסחי עם Claude</button>
+      <button class="btn primary" type="button" id="compSave" data-en="Save as Gmail draft">שמרי כטיוטה ב-Gmail</button>
+      <span class="sub" id="compStatus" aria-live="polite"></span>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" hidden><div><span id="toastText"></span><span id="toastAct"></span></div></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var MONDAY="monday.com", GMAIL="Gmail";
+var B={leads:5100640869,tasks:5105131079,logistics:5101928088,tours:5099555064};
+var C={ // column ids
+  lStatus:"color_mm5dd249",lEmail:"email_mm5mxbf",lPhone:"phone_mm5mysp",lInterest:"text_mm5m935t",lFuDate:"date_mm5mqtxx",lLang:"color_mm65s7rd",lSource:"color_mm5mqmpf",
+  tStatus:"color_mm7nkcy3",tDate:"date_mm7nzehk",tPri:"color_mm7nhn8g",
+  seat:"color_mm7tfy0g",agree:"color_mm7t491v",ins:"boolean_mm4vfawb",flights:"boolean_mm4vc0f5",wa:"boolean_mm4vzqhx",prep:"boolean_mm4vt7ps",
+  live:"color_mm6yyf84",cap:"numeric_mm4vs2x7",dates:"timerange_mm5vr4rk",grp:"text_mm647afv",product:"color_mm5d8gwd"
+};
+var STAGES=[
+  {key:"New Lead",id:5,he:"ליד חדש",cls:"new"},
+  {key:"Attempted",id:6,he:"ניסיתי להשיג",cls:"att"},
+  {key:"Contacted",id:4,he:"דיברנו",cls:"con"},
+  {key:"Follow-Up Needed",id:0,he:"צריך לחזור",cls:"fu"},
+  {key:"Briefing Done",id:2,he:"אחרי תדריך",cls:"brief"}
+];
+var STAGE_BY=Object.fromEntries(STAGES.map(function(s){return[s.key,s]}));
+
+var S={mcp:null,sample:null,leads:[],tasks:[],tours:[],regs:[],err:{},loaded:{},view:"urgent",open:{},db:null,camps:[],campsLoaded:false,campEdit:false,limit:15,q:"",syncedAt:null,draftLead:null};
+var $=function(id){return document.getElementById(id)};
+function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+
+/* ---------- language ---------- */
+var EN=store("emilia.lang")==="en";
+function L(he,en){return EN?en:he}
+function inDays(d){return L(" · בעוד "+d+" ימים"," · in "+d+(d===1?" day":" days"))}
+function stageName(s){var x=STAGE_BY[s];return x?(EN?x.key:x.he):(s||"")}
+var TASK_EN={"לעשות":"To do","בעבודה":"Working on it","תקוע":"Stuck","לאישור מתן":"Awaiting Matan","בוצע":"Done"};
+function taskStatusName(s){return EN&&TASK_EN[s]?TASK_EN[s]:s}
+function applyLang(){
+  var app=$("app");app.dir=EN?"ltr":"rtl";app.lang=EN?"en":"he";document.documentElement.lang=app.lang;
+  document.title=L("השולחן של אמיליה","Emilia's Desk");
+  document.querySelectorAll("[data-en]").forEach(function(el){if(el.dataset.he==null)el.dataset.he=el.innerHTML;el.innerHTML=EN?el.dataset.en:el.dataset.he});
+  document.querySelectorAll("[data-en-ph]").forEach(function(el){if(el.dataset.hePh==null)el.dataset.hePh=el.placeholder;el.placeholder=EN?el.dataset.enPh:el.dataset.hePh});
+  document.querySelectorAll("[data-en-al]").forEach(function(el){if(el.dataset.heAl==null)el.dataset.heAl=el.getAttribute("aria-label")||"";el.setAttribute("aria-label",EN?el.dataset.enAl:el.dataset.heAl)});
+  var b=$("langBtn");b.textContent=EN?"עברית":"English";b.lang=EN?"he":"en";b.setAttribute("aria-label",EN?"מעבר לעברית":"Switch to English");
+}
+
+/* ---------- dates ---------- */
+function todayISO(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function parseDay(s){if(!s)return null;var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2])}
+function daysFrom(s){var d=parseDay(s);if(!d)return null;var t=parseDay(todayISO());return Math.round((d-t)/864e5)}
+function fmtDay(s){var d=parseDay(s);return d?d.getDate()+"."+(d.getMonth()+1):""}
+function ago(iso){var h=(Date.now()-new Date(iso).getTime())/36e5;if(h<1)return L("לפני פחות משעה","less than an hour ago");if(h<24)return L("לפני "+Math.round(h)+" שעות",Math.round(h)+" hours ago");var d=Math.round(h/24);return d===1?L("לפני יום","a day ago"):L("לפני "+d+" ימים",d+" days ago")}
+function hoursSince(iso){return (Date.now()-new Date(iso).getTime())/36e5}
+function header(){
+  var now=new Date();
+  $("todayText").textContent=new Intl.DateTimeFormat(L("he-IL","en-GB"),{weekday:"long",day:"numeric",month:"long"}).format(now);
+  var h=now.getHours();$("greet").textContent=h<12?L("בוקר טוב","Good morning"):h<17?L("צהריים טובים","Good afternoon"):L("ערב טוב","Good evening");
+}
+
+/* ---------- phones ---------- */
+function intlPhone(p){var d=String(p||"").replace(/\D/g,"");if(!d)return"";if(d.startsWith("972"))return d;if(d.startsWith("0"))return"972"+d.slice(1);if(d.length===9&&d[0]==="5")return"972"+d;return d}
+function localPhone(p){var d=intlPhone(p);if(d.startsWith("972")){var r="0"+d.slice(3);return r.length===10?r.slice(0,3)+"-"+r.slice(3):r}return "+"+d}
+
+/* ---------- mcp ---------- */
+var ERR={
+  server_not_connected:function(s){return L("צריך לחבר את "+s+" ב-Claude: הגדרות ← Connectors.",s+" needs to be connected in Claude: Settings → Connectors.")},
+  needs_reauth:function(s){return L("החיבור ל-"+s+" פג. מחברים מחדש ב-Claude: הגדרות ← Connectors.","The "+s+" connection expired. Reconnect in Claude: Settings → Connectors.")},
+  selection_required:function(s){return L("יש יותר מחיבור אחד בשם "+s+". בוחרים אחד בהודעה של Claude מעל הדף.","There's more than one "+s+" connection. Pick one in Claude's message above the page.")},
+  not_in_manifest:function(s){return L("הגישה ל-"+s+" לא אושרה לדף הזה. אפשר לאשר בתפריט ההרשאות של הדף.","Access to "+s+" wasn't approved for this page. You can approve it in the page's permissions menu.")},
+  blocked_by_policy:function(s){return L("הארגון חוסם את הפעולה הזו ב-"+s+".","Your organization blocks this action in "+s+".")},
+  server_unavailable:function(s){return L(s+" לא עונה כרגע. נסי לרענן בעוד רגע.",s+" isn't responding right now. Try refreshing in a moment.")},
+  tool_error:function(s,e){return L(s+" החזיר שגיאה: ",s+" returned an error: ")+(e.message||"")}
+};
+function errText(e,server){var f=ERR[e&&e.code];return f?f(server,e):(server+": "+((e&&e.message)||L("שגיאה לא צפויה","Unexpected error")))}
+async function call(server,tool,input,opts){
+  if(!S.mcp)throw{code:"not_granted",message:"החיבורים לא זמינים בתצוגה הזו"};
+  var r=await S.mcp.callTool(server,tool,input,opts);
+  var p=r.payload;
+  if(typeof p==="string"){try{p=JSON.parse(p)}catch(_){}}
+  return p;
+}
+async function readBoard(boardId,extra){
+  var input=Object.assign({boardId:boardId,includeColumns:true,includeGroup:true,limit:500},extra);
+  var items=[],cursor=null,guard=0;
+  do{
+    if(cursor)input=Object.assign({},input,{cursor:cursor});
+    var p=await call(MONDAY,"get_board_items_page",input,{cache:false});
+    items=items.concat((p&&p.items)||[]);
+    cursor=p&&p.pagination&&p.pagination.has_more?p.pagination.nextCursor:null;
+  }while(cursor&&++guard<6);
+  return items;
+}
+function cv(item,col){var v=item.column_values&&item.column_values[col];return v==null?null:v}
+function checked(item,col){var v=cv(item,col);return !!(v&&(v.checked===true||v.checked==="true"))}
+
+/* ---------- loading ---------- */
+async function loadAll(){
+  $("refreshBtn").disabled=true;$("syncText").textContent=L("מעדכן…","Updating…");
+  await Promise.all([loadLeads(),loadTasks(),loadTours()]);
+  S.syncedAt=new Date();$("refreshBtn").disabled=false;syncLabel();renderAll();
+}
+async function loadLeads(){
+  try{
+    var items=await readBoard(B.leads,{
+      columnIds:[C.lStatus,C.lEmail,C.lPhone,C.lInterest,C.lFuDate,C.lLang,C.lSource],
+      filters:[{columnId:C.lStatus,compareValue:STAGES.map(function(s){return s.id}),operator:"any_of"}],
+      orderBy:[{columnId:"__creation_log__",direction:"desc"}],includeGroup:true
+    });
+    S.leads=items.map(function(it){return{id:it.id,name:it.name,url:it.url,created:it.created_at,updated:it.updated_at,group:it.group&&it.group.id,
+      status:cv(it,C.lStatus),email:cv(it,C.lEmail),phone:cv(it,C.lPhone),interest:cv(it,C.lInterest),
+      fu:cv(it,C.lFuDate),lang:cv(it,C.lLang),source:cv(it,C.lSource)}});
+    S.err.leads=null;S.loaded.leads=true;
+  }catch(e){S.err.leads=errText(e,MONDAY);S.loaded.leads=true}
+}
+async function loadTasks(){
+  try{
+    var items=await readBoard(B.tasks,{columnIds:[C.tStatus,C.tDate,C.tPri],filters:[{columnId:"group",compareValue:["topics"],operator:"any_of"}],includeGroup:false});
+    S.tasks=items.map(function(it){return{id:it.id,name:it.name,url:it.url,status:cv(it,C.tStatus),due:cv(it,C.tDate),pri:cv(it,C.tPri)}});
+    S.err.tasks=null;S.loaded.tasks=true;
+  }catch(e){S.err.tasks=errText(e,MONDAY);S.loaded.tasks=true}
+}
+async function loadTours(){
+  try{
+    var res=await Promise.all([
+      readBoard(B.tours,{columnIds:[C.live,C.cap,C.dates,C.grp,C.product],includeGroup:false}),
+      readBoard(B.logistics,{columnIds:[C.seat,C.agree,C.ins,C.flights,C.wa,C.prep],includeGroup:true})
+    ]);
+    S.tours=res[0].filter(function(t){return cv(t,C.live)==="Live Tour"}).map(function(t){
+      var dr=String(cv(t,C.dates)||"").split(" - ");
+      var parts=t.name.split(" - ");
+      return{id:t.id,url:t.url,full:t.name,title:parts[0]||t.name,place:parts[1]||"",start:dr[0]||null,end:dr[1]||dr[0]||null,cap:parseFloat(cv(t,C.cap))||0,group:cv(t,C.grp),local:cv(t,C.product)==="Local Workshops"};
+    }).filter(function(t){return !t.end||daysFrom(t.end)>=0}).sort(function(a,b){return (a.start||"9999").localeCompare(b.start||"9999")});
+    S.regs=res[1].map(function(r){return{id:r.id,created:r.created_at,group:r.group&&r.group.id,seat:cv(r,C.seat),agree:cv(r,C.agree),ins:checked(r,C.ins),flights:checked(r,C.flights),wa:checked(r,C.wa),prep:checked(r,C.prep)}});
+    S.err.tours=null;S.loaded.tours=true;
+  }catch(e){S.err.tours=errText(e,MONDAY);S.loaded.tours=true}
+}
+function syncLabel(){
+  if(!S.syncedAt)return;var m=Math.round((Date.now()-S.syncedAt)/6e4);
+  $("syncText").textContent=m<1?L("עודכן עכשיו","Updated just now"):L("עודכן לפני "+m+" דק׳","Updated "+m+" min ago");
+}
+
+/* ---------- derived ---------- */
+var RAV="group_mm6h1jna";
+function isImport(l){return l.group===RAV}
+function norm(x){return String(x||"").toLowerCase()}
+function campOf(l){
+  var hay=norm(l.interest)+" "+norm(l.source);
+  for(var i=0;i<S.camps.length;i++){var c=S.camps[i];if((c.keywords||[]).some(function(k){k=norm(k).trim();return k&&hay.includes(k)}))return c}
+  return null;
+}
+function isParked(l){return isImport(l)||l.source==="Landing Page"}
+/* urgency: higher rank = higher in the list. null = not urgent today */
+function urgency(l){
+  var t=todayISO(),c=campOf(l);
+  if(l.fu&&l.fu<=t&&(c||!isParked(l))){var d=-daysFrom(l.fu);return{rank:1000+d,tone:"crit",why:d>0?L("פולואפ באיחור של "+d+(d===1?" יום":" ימים"),"Follow-up "+d+(d===1?" day":" days")+" overdue"):L("פולואפ להיום","Follow-up due today")}}
+  if(!c)return null;
+  if(l.status==="Follow-Up Needed"&&!l.fu)return{rank:900,tone:"crit",why:L("צריך לחזור · אין תאריך","Needs follow-up · no date")};
+  if(l.status==="New Lead"){var ageH=hoursSince(l.created);return{rank:500+ageH/24,tone:ageH>24?"warn":"",why:L("ליד חדש · מחכה "+ago(l.created).replace("לפני ",""),"New lead · waiting "+ago(l.created).replace(" ago",""))}}
+  if(l.status==="Attempted"&&!l.fu&&hoursSince(l.updated||l.created)>48)return{rank:300,tone:"",why:L("ניסינו ולא ענה · לנסות שוב","No answer · try again")};
+  return null;
+}
+function viewOf(l){
+  if(isParked(l)&&!campOf(l))return"parked";
+  if(l.status==="New Lead"&&!campOf(l))return"other";
+  return"active";
+}
+function views(){
+  var v=[{key:"urgent",he:L("דחוף עכשיו","Urgent now"),hot:true}];
+  S.camps.forEach(function(c){v.push({key:"camp:"+c.id,he:c.name})});
+  v.push({key:"active",he:L("בתהליך","In progress")},{key:"other",he:L("פניות אחרות","Other inquiries")},{key:"parked",he:L("לא בפוקוס","Not in focus")});
+  return v;
+}
+function inView(key,l){
+  if(key==="urgent")return !!urgency(l);
+  if(key.indexOf("camp:")===0){var c=campOf(l);return !!c&&"camp:"+c.id===key}
+  if(key==="active")return viewOf(l)==="active"&&!campOf(l);
+  return viewOf(l)===key;
+}
+function sortView(key,list){
+  if(key==="urgent")return list.sort(function(a,b){return urgency(b).rank-urgency(a).rank});
+  if(key.indexOf("camp:")===0)return list.sort(function(a,b){var ua=urgency(a),ub=urgency(b);return (ub?ub.rank:0)-(ua?ua.rank:0)||b.created.localeCompare(a.created)});
+  if(key==="active")return list.sort(function(a,b){return (a.fu||"9999").localeCompare(b.fu||"9999")||(a.updated||"").localeCompare(b.updated||"")});
+  return list.sort(function(a,b){return b.created.localeCompare(a.created)});
+}
+function leadsIn(key){return sortView(key,S.leads.filter(function(l){return inView(key,l)}))}
+function leadsNew(){return S.leads.filter(function(l){return l.status==="New Lead"&&campOf(l)})}
+function leadsFuDue(){var t=todayISO();return S.leads.filter(function(l){return l.fu&&l.fu<=t&&(campOf(l)||!isParked(l))})}
+function openTasks(){return S.tasks.filter(function(t){return t.status!=="בוצע"}).sort(function(a,b){
+  var pa=a.pri==="גבוהה"?0:a.pri==="נמוכה"?2:1,pb=b.pri==="גבוהה"?0:b.pri==="נמוכה"?2:1;
+  return (a.due||"9999").localeCompare(b.due||"9999")||pa-pb})}
+function tourStats(t){
+  var rs=S.regs.filter(function(r){return r.group===t.group&&r.seat!=="Cancelled"&&r.seat!=="Staff / Guide"&&r.seat!=="Interested"});
+  var n=rs.length,cnt=function(f){return rs.filter(f).length};
+  return{n:n,rs:rs,ins:cnt(function(r){return r.ins}),flights:cnt(function(r){return r.flights}),wa:cnt(function(r){return r.wa}),prep:cnt(function(r){return r.prep}),
+    agree:cnt(function(r){return r.agree==="נחתם"||r.agree==="נרשם לפני – לא נדרש"}),toSend:cnt(function(r){return r.agree==="לשלוח"}),
+    paid:cnt(function(r){return r.seat==="Fully paid"}),deposit:cnt(function(r){return r.seat==="Deposit paid"})};
+}
+function campTours(c){return S.tours.filter(function(t){var n=norm(t.full);return (c.keywords||[]).some(function(k){k=norm(k).trim();return k&&n.includes(k)})})}
+
+/* ---------- icons ---------- */
+var I={
+  phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>',
+  wa:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.7A8.5 8.5 0 1 1 21 11.5Z"/></svg>',
+  mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+  task:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>',
+  copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>'
+};
+
+/* ---------- render: leads ---------- */
+function leadCard(l,px){
+  px=px||"l";
+  var st=STAGE_BY[l.status]||{cls:"new"};
+  var u=urgency(l),ph=intlPhone(l.phone),open=!!S.open[px+l.id];
+  var tone=u?u.tone:"";
+  var icon=l.status==="Follow-Up Needed"||(u&&u.rank>=900)?I.clock:l.status==="New Lead"?I.phone:I.user;
+  var why=u?'<span class="'+tone+'">'+esc(u.why)+'</span>':(l.fu?L("פולואפ ","Follow-up ")+esc(fmtDay(l.fu)):L("נכנס ","Came in ")+esc(ago(l.created)));
+  var whyLine=[why];if(l.interest)whyLine.push(esc(l.interest));
+  var contact="";
+  if(ph)contact+='<a class="chipbtn" href="https://wa.me/'+esc(ph)+'" target="_blank" rel="noopener">'+I.wa+'WhatsApp</a>'+
+    '<button class="chipbtn" type="button" data-act="copy" data-v="'+esc(localPhone(l.phone))+'" aria-label="'+L("העתקת מספר","Copy number")+'">'+I.copy+esc(localPhone(l.phone))+'</button>';
+  if(l.email)contact+='<button class="chipbtn" type="button" data-act="copy" data-v="'+esc(l.email)+'" aria-label="'+L("העתקת מייל","Copy email")+'">'+I.copy+esc(l.email)+'</button>';
+  var primary=l.status==="New Lead"||l.status==="Attempted"
+    ?'<button class="btn" type="button" data-act="noanswer" data-id="'+l.id+'">'+L("לא ענה","No answer")+'</button><button class="btn primary" type="button" data-act="talked" data-id="'+l.id+'">'+L("דיברנו","We spoke")+'</button>'
+    :'<button class="btn" type="button" data-act="talked" data-id="'+l.id+'">'+L("דיברנו שוב","Spoke again")+'</button>';
+  var meta=[L("נכנס ","Came in ")+esc(ago(l.created))];if(l.source)meta.push(L("מקור: ","Source: ")+esc(l.source));if(l.lang)meta.push(l.lang==="English"?L("אנגלית","English"):L("עברית","Hebrew"));
+  return '<article class="row lead" data-lead="'+l.id+'">'+
+    '<button type="button" class="lead-sum" data-act="toggle" data-key="'+px+l.id+'" aria-expanded="'+open+'" aria-controls="'+px+'-m-'+l.id+'">'+
+      '<span class="dot '+tone+'">'+icon+'</span>'+
+      '<span class="body"><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="name">'+esc(l.name)+'</span><span class="pill p-'+st.cls+'">'+esc(stageName(l.status))+'</span></span>'+
+      '<span class="why">'+whyLine.join(" · ")+'</span></span>'+
+      '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>'+
+    '</button>'+
+    '<div class="lead-more" id="'+px+'-m-'+l.id+'"'+(open?"":" hidden")+'>'+
+      '<div class="meta">'+meta.join(" · ")+'</div>'+
+      (contact?'<div class="contact">'+contact+'</div>':"")+
+      '<div class="actions">'+primary+
+        '<button class="btn" type="button" data-act="fu" data-id="'+l.id+'">'+L("פולואפ","Follow-up")+'</button>'+
+        (l.email?'<button class="btn" type="button" data-act="draft" data-id="'+l.id+'">'+L("טיוטת מייל","Draft email")+'</button>':"")+
+        '<a class="btn quiet" href="'+esc(l.url)+'" target="_blank" rel="noopener">monday</a>'+
+      '</div>'+
+      '<div class="fu-row" hidden><label class="sub" for="'+px+'-fud-'+l.id+'">'+L("לחזור ב:","Follow up on:")+'</label><input type="date" id="'+px+'-fud-'+l.id+'" value="'+esc(plusDays(2))+'"><button class="btn primary" type="button" data-act="fusave" data-id="'+l.id+'">'+L("קבעי","Set")+'</button><button class="btn quiet" type="button" data-act="fucancel" data-id="'+l.id+'">'+L("ביטול","Cancel")+'</button></div>'+
+    '</div>'+
+  '</article>';
+}
+function plusDays(n){var d=new Date();d.setDate(d.getDate()+n);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+
+function renderViews(){
+  var ok=S.loaded.leads&&!S.err.leads;
+  $("views").innerHTML=views().map(function(v){var n=ok?S.leads.filter(function(l){return inView(v.key,l)}).length:"–";return '<button type="button" class="view'+(v.hot?" hot":"")+'" data-view="'+esc(v.key)+'" aria-pressed="'+(S.view===v.key&&!S.q)+'">'+esc(v.he)+' <b>'+n+'</b></button>'}).join("");
+}
+function renderCamps(){
+  var el=$("campList");
+  if(!S.db){el.innerHTML='<span class="sub">'+L("שמירת קמפיינים לא זמינה בתצוגה הזו.","Saving campaigns isn't available in this view.")+'</span>';return}
+  if(!S.campsLoaded){el.innerHTML='<span class="sub">'+L("טוען…","Loading…")+'</span>';return}
+  el.innerHTML=S.camps.length?S.camps.map(function(c){return '<span class="camp">'+esc(c.name)+(S.campEdit?'<button type="button" data-act="campdel" data-cid="'+esc(c.id)+'" aria-label="'+L("הסרת הקמפיין ","Remove campaign ")+esc(c.name)+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>':"")+'</span>'}).join(""):'<span class="sub">'+L('אין קמפיין פעיל. לוחצים "עריכה" ומוסיפים את הקמפיין שרץ עכשיו.','No active campaign. Click "Edit" and add the campaign that\'s running now.')+'</span>';
+  $("campForm").hidden=!S.campEdit;$("campHelp").hidden=!S.campEdit;
+  var eb=document.querySelector("[data-act=campedit]");if(eb){eb.textContent=S.campEdit?L("סיום","Done"):L("עריכה","Edit");eb.setAttribute("aria-expanded",String(S.campEdit))}
+}
+function campHeader(c){
+  var ts=campTours(c);
+  if(!ts.length)return "";
+  return '<div class="camp-dates">'+ts.map(function(t){var st=tourStats(t),d=t.start?daysFrom(t.start):null;
+    return '<div class="camp-date"><b>'+esc(fmtDay(t.start))+'</b><span>'+st.n+(t.cap?"/"+t.cap:"")+L(' נרשמו',' registered')+(d!=null&&d>=0?inDays(d):"")+'</span></div>'}).join("")+'</div>';
+}
+function viewHint(k){return ({
+  urgent:"",
+  active:L("לידים מחוץ לקמפיין שכבר דיברנו איתם או ניסינו. קודם מי שיש לו פולואפ קרוב.","Leads outside the campaign we've already spoken to or tried. Nearest follow-up first."),
+  other:L("פניות חדשות שלא שייכות לקמפיין הפעיל. לא דחוף, אבל כדאי לעבור כשיש זמן.","New inquiries that don't belong to the active campaign. Not urgent, but worth going through when there's time."),
+  parked:L("לידים מדף הנחיתה ואנשי קשר שיובאו מרב-מסר. לא בפוקוס כרגע, ולכן לא מופיעים בדחופים.","Landing page leads and contacts imported from Rav-Messer. Not in focus right now, so they don't appear in urgent.")
+})[k]||""}
+function renderLeads(){
+  renderViews();
+  var el=$("leadList");
+  if(!S.loaded.leads){return}
+  if(S.err.leads){el.innerHTML='<div class="note err">'+esc(S.err.leads)+'</div>';$("leadCount").textContent="";return}
+  var q=S.q.trim().toLowerCase(),qd=q.replace(/\D/g,""),list;
+  if(q){
+    list=S.leads.filter(function(l){return [l.name,l.email,l.interest].some(function(v){return v&&String(v).toLowerCase().includes(q)})||(qd.length>3&&intlPhone(l.phone).includes(qd.replace(/^0/,"")))});
+    list=sortView("active",list);
+    $("leadCount").textContent=list.length+L(" תוצאות בכל הלידים"," results across all leads");
+  }else{
+    if(S.view!=="urgent"&&!views().some(function(v){return v.key===S.view}))S.view="urgent";
+    list=leadsIn(S.view);
+    $("leadCount").textContent="";
+  }
+  var hint=!q&&viewHint(S.view)?'<div class="hint">'+viewHint(S.view)+'</div>':"";
+  if(!q&&S.view.indexOf("camp:")===0){var cc=S.camps.find(function(c){return "camp:"+c.id===S.view});if(cc)hint=campHeader(cc)}
+  if(!q&&S.view==="urgent"&&S.campsLoaded&&!S.camps.length)hint='<div class="hint">'+L("אין קמפיין פעיל, ולכן מוצגים כאן רק פולואפים שהגיע זמנם.","No active campaign, so only follow-ups that are due are shown here.")+'</div>';
+  var shown=list.slice(0,S.limit);
+  el.innerHTML=hint+(list.length?shown.map(function(l){return leadCard(l)}).join("")+(list.length>S.limit?'<button class="btn more" type="button" data-act="more">'+L('עוד '+Math.min(15,list.length-S.limit)+' מתוך '+(list.length-S.limit),Math.min(15,list.length-S.limit)+' more of '+(list.length-S.limit))+'</button>':""):'<div class="empty">'+(q?L("אין לידים שמתאימים לחיפוש.","No leads match the search."):S.view==="urgent"?L("אין לידים דחופים. הכול מטופל, כל הכבוד!","No urgent leads. Everything's handled, well done!"):L("אין כאן לידים.","No leads here."))+'</div>');
+}
+
+/* ---------- render: today ---------- */
+function renderToday(){
+  var el=$("todayList");
+  if(!S.loaded.leads)return;
+  if(S.err.leads){el.innerHTML='<div class="note err">'+esc(S.err.leads)+'</div>';return}
+  var urg=leadsIn("urgent"),top=urg.slice(0,6);
+  $("cToday").textContent=urg.length;
+  el.innerHTML=top.length?top.map(function(l){return leadCard(l,"t")}).join("")+(urg.length>6?'<button class="btn more" type="button" data-goto="leads" data-view-set="urgent">'+L('עוד '+(urg.length-6)+' דחופים',(urg.length-6)+' more urgent')+'</button>':""):'<div class="empty">'+L("אין לידים דחופים היום. אפשר לעבור למשימות.","No urgent leads today. You can move on to tasks.")+'</div>';
+}
+function taskRow(t){
+  var d=t.due?daysFrom(t.due):null,late=d!=null&&d<0;
+  var due=t.due?(late?'<span class="late">'+L("באיחור · ","Overdue · ")+esc(fmtDay(t.due))+'</span>':d===0?'<span class="late">'+L("היום","Today")+'</span>':L("עד ","Due ")+esc(fmtDay(t.due))):"";
+  var stat=t.status&&t.status!=="לעשות"?'<span class="pill '+(t.status==="תקוע"?"p-fu":t.status==="לאישור מתן"?"p-brief":t.status==="בעבודה"?"p-att":"p-con")+'">'+esc(taskStatusName(t.status))+'</span>':"";
+  var pri=t.pri==="גבוהה"?'<span class="pill p-fu">'+L("עדיפות גבוהה","High priority")+'</span>':"";
+  return '<div class="task'+(t.status==="בוצע"?" done":"")+'"><input type="checkbox" id="tk-'+t.id+'" data-act="taskdone" data-id="'+t.id+'"'+(t.status==="בוצע"?" checked":"")+'>'+
+    '<div style="min-width:0;display:flex;flex-direction:column;gap:3px"><label class="t" for="tk-'+t.id+'">'+esc(t.name)+'</label><div class="m">'+[due,stat,pri].filter(Boolean).join("")+'<a href="'+esc(t.url)+'" target="_blank" rel="noopener">monday</a></div></div></div>';
+}
+function renderTasks(){
+  if(!S.loaded.tasks)return;
+  var open=openTasks();
+  $("cTasks").textContent=open.length;
+  if(S.err.tasks){var n='<div class="note err">'+esc(S.err.tasks)+'</div>';$("taskList").innerHTML=n;$("todayTasks").innerHTML=n;return}
+  $("taskList").innerHTML=open.length?open.map(taskRow).join(""):'<div class="empty">'+L("אין משימות פתוחות. כל הכבוד.","No open tasks. Well done.")+'</div>';
+  var soon=open.filter(function(t){return t.pri==="גבוהה"||(t.due&&daysFrom(t.due)<=2)}).slice(0,6);
+  $("todayTasks").innerHTML=soon.length?soon.map(taskRow).join(""):'<div class="empty">'+L("אין משימות דחופות ליומיים הקרובים.","No urgent tasks for the next two days.")+'</div>';
+}
+
+/* ---------- render: tours ---------- */
+function renderTours(){
+  var el=$("tourList");
+  if(!S.loaded.tours)return;
+  if(S.err.tours){el.innerHTML='<div class="note err">'+esc(S.err.tours)+'</div>';return}
+  if(!S.tours.length){el.innerHTML='<div class="empty">'+L("אין מסעות פעילים עם תאריך עתידי.","No active tours with a future date.")+'</div>';return}
+  el.innerHTML=S.tours.map(function(t){
+    var s=tourStats(t),cap=t.cap||0,d=t.start?daysFrom(t.start):null;
+    var badge="";
+    if(cap&&s.n>cap)badge='<span class="pill p-fu">'+(s.n-cap)+L(' מעבר לקיבולת',' over capacity')+'</span>';
+    else if(cap&&s.n===cap)badge='<span class="pill p-ok">'+L("מלא","Full")+'</span>';
+    else if(cap&&cap-s.n===1)badge='<span class="pill p-att">'+L("מקום אחרון","Last seat")+'</span>';
+    var bars="",total=Math.max(cap,s.n);for(var i=0;i<total;i++)bars+='<span class="'+(i<Math.min(s.n,cap||s.n)?"on":i<s.n?"over":"")+'"></span>';
+    var ck=function(lbl,v,showMissing){var miss=s.n&&v<s.n;return '<span class="ck'+(miss&&showMissing?" miss":"")+'"><i></i>'+lbl+" "+v+"/"+s.n+"</span>"};
+    var near=d!=null&&d<=45;
+    var when=t.start?(fmtDay(t.start)+(t.end&&t.end!==t.start?"–"+fmtDay(t.end):"")+"."+t.start.slice(0,4)):L("תאריך לא נקבע","Date not set");
+    var checks=t.local?ck(L("וואטסאפ","WhatsApp"),s.wa,true):[ck(L("הסכם","Agreement"),s.agree,true),ck(L("ביטוח","Insurance"),s.ins,near),ck(L("טיסות","Flights"),s.flights,near),ck(L("וואטסאפ","WhatsApp"),s.wa,true),ck(L("דף הכנה","Prep page"),s.prep,d!=null&&d<=30)].join("");
+    return '<article class="tour'+(near&&s.n?" soon":"")+'">'+
+      '<div class="tour-head"><div><div class="when">'+esc(when)+(d!=null&&d>=0?inDays(d):"")+'</div><div class="tname">'+esc(t.title)+'</div><div class="sub">'+esc(t.place)+'</div></div>'+badge+'</div>'+
+      (total?'<div class="seats" aria-hidden="true">'+bars+'</div>':"")+
+      '<div class="sub">'+s.n+(cap?L(" מתוך "," of ")+cap:"")+L(' נרשמים',' registrants')+(s.n?L(" · שילמו מלא "," · fully paid ")+s.paid+L(" · מקדמה "," · deposit ")+s.deposit:"")+(s.toSend?' · <span class="late">'+s.toSend+L(' הסכמים לשלוח',' agreements to send')+'</span>':"")+'</div>'+
+      (s.n?'<div class="checks">'+checks+'</div>':"")+
+      '<div class="actions"><a class="btn quiet" href="'+esc(t.url)+'" target="_blank" rel="noopener">'+L("פרטי המסע","Tour details")+'</a><a class="btn quiet" href="https://matanwildphotography.monday.com/boards/'+B.logistics+'" target="_blank" rel="noopener">'+L("נרשמים","Registrants")+'</a></div>'+
+    '</article>';
+  }).join("");
+}
+
+/* ---------- stats ---------- */
+function renderStats(){
+  if(S.loaded.leads&&!S.err.leads){$("stNew").textContent=leadsNew().length;$("stFu").textContent=leadsFuDue().length;$("cLeads").textContent=leadsIn("urgent").length}
+  if(S.loaded.tasks&&!S.err.tasks)$("stTasks").textContent=openTasks().length;
+  if(S.loaded.tours&&!S.err.tours){
+    var next=S.tours.find(function(t){return t.start&&daysFrom(t.start)>=0});
+    if(next){$("stTour").textContent=daysFrom(next.start);$("stTourL").textContent=L("ימים ל","Days to ")+next.title}
+  }
+}
+function counted(r){return r.seat!=="Cancelled"&&r.seat!=="Staff / Guide"&&r.seat!=="Interested"}
+function renderSales(){
+  if(!S.loaded.tours)return;
+  if(S.err.tours){$("kpis").innerHTML='<div class="note err">'+esc(S.err.tours)+'</div>';$("fillBars").innerHTML="";$("weekly").innerHTML="";return}
+  var regs=S.regs.filter(function(r){return counted(r)&&r.created});
+  var since=function(d){return regs.filter(function(r){return hoursSince(r.created)<=d*24}).length};
+  var up=S.tours.filter(function(t){return t.start&&daysFrom(t.start)>=0&&daysFrom(t.start)<=90&&t.cap});
+  var cap=0,taken=0;up.forEach(function(t){var st=tourStats(t);cap+=t.cap;taken+=Math.min(st.n,t.cap)});
+  var k=[[since(7),L("נרשמו ב-7 הימים האחרונים","Registered in the last 7 days")],[since(30),L("נרשמו ב-30 הימים האחרונים","Registered in the last 30 days")],[Math.max(cap-taken,0),L("מקומות פנויים ב-90 הימים הקרובים","Open seats in the next 90 days")],[cap?Math.round(taken/cap*100)+"%":"–",L("תפוסה במסעות האלה","Occupancy in these tours")]];
+  $("kpis").innerHTML=k.map(function(x){return '<div class="kpi"><span class="n">'+x[0]+'</span><span class="l">'+x[1]+'</span></div>'}).join("");
+  var withCap=S.tours.filter(function(t){return t.cap});
+  $("fillBars").innerHTML=withCap.length?withCap.map(function(t){
+    var st=tourStats(t),pct=Math.min(st.n/t.cap,1)*100,d=t.start?daysFrom(t.start):null,tag="";
+    if(st.n>t.cap)tag='<span class="pill p-fu">'+L("חריגה ","Over by ")+(st.n-t.cap)+'</span>';
+    else if(st.n>=t.cap)tag='<span class="pill p-ok">'+L("מלא","Full")+'</span>';
+    else if(d!=null&&d<=45&&st.n/t.cap<.5)tag='<span class="pill p-att">'+L("צריך דחיפה","Needs a push")+'</span>';
+    return '<div class="bar-row" title="'+esc(t.title)+": "+st.n+L(" מתוך "," of ")+t.cap+'"><div class="lbl">'+esc(t.title)+'<small>'+esc(fmtDay(t.start))+(d!=null&&d>=0?inDays(d):"")+'</small></div><div class="track"><div class="fill'+(st.n>t.cap?" over":"")+'" style="width:'+pct.toFixed(1)+'%"></div></div><div class="val">'+st.n+"/"+t.cap+tag+'</div></div>';
+  }).join(""):'<div class="empty">'+L("אין מסעות עם קיבולת מוגדרת.","No tours with a set capacity.")+'</div>';
+  var now=new Date(),sun=new Date(now.getFullYear(),now.getMonth(),now.getDate()-now.getDay()),weeks=[];
+  for(var i=7;i>=0;i--){var a=new Date(sun);a.setDate(sun.getDate()-7*i);var b=new Date(a);b.setDate(a.getDate()+7);weeks.push({a:a,n:regs.filter(function(r){var c=new Date(r.created);return c>=a&&c<b}).length})}
+  var mx=Math.max.apply(null,weeks.map(function(w){return w.n}).concat([1]));
+  $("weekly").innerHTML='<div class="cols">'+weeks.map(function(w,i){return '<div class="col" title="'+L("שבוע מ-","Week of ")+w.a.getDate()+"."+(w.a.getMonth()+1)+": "+w.n+L(' הרשמות',' registrations')+'"><span class="v">'+(w.n||"")+'</span><div class="c'+(i===weeks.length-1?" now":"")+'" style="height:'+(w.n/mx*100).toFixed(1)+'%"></div></div>'}).join("")+'</div><div class="col-lbls">'+weeks.map(function(w){return "<span>"+w.a.getDate()+"."+(w.a.getMonth()+1)+"</span>"}).join("")+'</div>';
+  var c=S.camps[0];
+  if(!c||!S.loaded.leads||S.err.leads){$("funnelTitle").textContent=L("הקמפיין הפעיל","Active campaign");$("funnel").innerHTML='<div class="empty">'+(c?L("טוען לידים…","Loading leads…"):L("אין קמפיין פעיל.","No active campaign."))+'</div>';return}
+  $("funnelTitle").textContent=c.name;
+  var cl=S.leads.filter(function(l){var x=campOf(l);return x&&x.id===c.id});
+  var regN=campTours(c).reduce(function(s,t){return s+tourStats(t).n},0);
+  var steps=[[L("לידים פתוחים בקמפיין","Open campaign leads"),cl.length],[L("כבר דיברנו או ניסינו","Already spoke or tried"),cl.filter(function(l){return l.status!=="New Lead"}).length],[L("אחרי תדריך","After briefing"),cl.filter(function(l){return l.status==="Briefing Done"}).length],[L("נרשמו לתאריכי הקמפיין","Registered for campaign dates"),regN]];
+  var top=Math.max(steps[0][1],regN,1);
+  $("funnel").innerHTML=steps.map(function(x){return '<div class="bar-row" style="grid-template-columns:minmax(0,1fr) auto"><div class="lbl">'+x[0]+'</div><div class="val"><b>'+x[1]+'</b></div><div class="track" style="grid-column:1/-1"><div class="fill" style="width:'+(x[1]/top*100).toFixed(1)+'%"></div></div></div>'}).join("")+'<div class="sub">'+L("לידים שנסגרו או אבדו לא נספרים כאן.","Closed or lost leads aren't counted here.")+'</div>';
+}
+/* ---------- mood ---------- */
+function moodKey(){return "emilia.done."+todayISO()}
+function moodCount(){var v=parseInt(store(moodKey()),10);return isNaN(v)?0:v}
+function bumpMood(n){store(moodKey(),String(Math.max(0,moodCount()+n)));renderMood()}
+function renderMood(){
+  var n=moodCount(),goal=10,urg=S.loaded.leads&&!S.err.leads?leadsIn("urgent").length:null;
+  var msg=n===0?L("יום חדש. מתחילים מהראשון ברשימה","A new day. Start with the first one on the list"):n<3?L("התחלה טובה","Good start"):n<6?L("את בקצב יפה","You're keeping a nice pace"):n<10?L("עוד קצת והדחופים נגמרים","A little more and urgent is cleared"):L("יום חזק במיוחד. תודה!","A really strong day. Thank you!");
+  if(urg===0&&n>0)msg=L("כל הדחופים טופלו. כל הכבוד!","All urgent leads handled. Well done!");
+  if(n>0&&n%8===0)msg+=L(" · רגע טוב לקפה"," · good moment for a coffee");
+  var r=12,cir=2*Math.PI*r,off=cir*(1-Math.min(n/goal,1));
+  $("mood").innerHTML='<svg class="ring" viewBox="0 0 30 30" aria-hidden="true"><circle class="trk" cx="15" cy="15" r="'+r+'"/><circle class="val" cx="15" cy="15" r="'+r+'" stroke-dasharray="'+cir.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 15 15)"/></svg><span>'+(n?L("טיפלת היום ב-"+n+" · ","Handled "+n+" today · "):"")+esc(msg)+'</span>';
+}
+
+function renderAll(){renderCamps();renderStats();renderSales();renderMood();renderToday();renderLeads();renderTasks();renderTours()}
+
+/* ---------- toast ---------- */
+var toastT;
+function toast(msg,actHtml,onAct){
+  $("toastText").textContent=msg;$("toastAct").innerHTML=actHtml||"";$("toast").hidden=false;
+  var b=$("toastAct").querySelector("button");if(b&&onAct)b.onclick=function(){$("toast").hidden=true;onAct()};
+  clearTimeout(toastT);toastT=setTimeout(function(){$("toast").hidden=true},actHtml?7000:3500);
+}
+
+/* ---------- writes ---------- */
+function findLead(id){return S.leads.find(function(l){return l.id===id})}
+async function setLead(l,patch,note,btn){
+  var prev={status:l.status,fu:l.fu};
+  var cols={};
+  if(patch.status)cols[C.lStatus]={label:patch.status};
+  if(patch.fu!==undefined)cols[C.lFuDate]=patch.fu?{date:patch.fu}:null;
+  if(btn)btn.disabled=true;
+  try{
+    await call(MONDAY,"change_item_column_values",{boardId:B.leads,itemId:+l.id,columnValues:JSON.stringify(cols)});
+    Object.assign(l,patch);
+    bumpMood(note?1:-1);
+    if(note)call(MONDAY,"create_update",{itemId:+l.id,body:"<p>"+esc(note)+"</p>"}).catch(function(){});
+    renderAll();
+    document.querySelectorAll('[data-lead="'+l.id+'"]').forEach(function(r){r.classList.add("flash")});
+    toast(l.name+": "+stageName(l.status),'<button type="button">'+L("ביטול","Undo")+'</button>',function(){setLead(l,{status:prev.status,fu:prev.fu||null},null)});
+  }catch(e){toast(errText(e,MONDAY));if(btn)btn.disabled=false}
+}
+async function setTaskDone(t,done,box){
+  var prev=t.status,next=done?"בוצע":(t._prev||"לעשות");
+  box.disabled=true;
+  try{
+    var cols={};cols[C.tStatus]={label:next};
+    await call(MONDAY,"change_item_column_values",{boardId:B.tasks,itemId:+t.id,columnValues:JSON.stringify(cols)});
+    t._prev=prev;t.status=next;bumpMood(done?1:-1);renderAll();
+    if(done)toast(L("סומן כבוצע","Marked as done"),"<button type=\"button\">"+L("ביטול","Undo")+"</button>",function(){var cb=document.createElement("input");setTaskDone(t,false,cb)});
+  }catch(e){box.checked=!done;box.disabled=false;toast(errText(e,MONDAY))}
+}
+
+/* ---------- composer ---------- */
+function openComposer(l){
+  S.draftLead=l;
+  $("compTitle").textContent=L("טיוטת מייל ל","Email draft for ")+l.name;
+  $("compTo").value=l.email||"";
+  var en=l.lang==="English",first=String(l.name||"").split(" ")[0];
+  $("compSubj").value=en?"MW Photo Tours":"MW Photo Tours | "+(l.interest||"פרטים שביקשת");
+  $("compBody").value=en?("Hi "+first+",\n\nThank you for reaching out to MW Photo Tours.\n\n[write here]\n\nBest,\nEmilia\nMW Photo Tours"):("היי "+first+",\n\nתודה שפנית אלינו ב-MW Photo Tours.\n\n[לכתוב כאן]\n\nבברכה,\nאמיליה\nMW Photo Tours");
+  $("compStatus").textContent="";$("compSave").disabled=false;
+  $("compAi").hidden=!S.sample;
+  $("composer").hidden=false;$("compBody").focus();
+}
+function closeComposer(){$("composer").hidden=true;S.draftLead=null}
+async function aiDraft(){
+  var l=S.draftLead;if(!l||!S.sample)return;
+  var btn=$("compAi");btn.disabled=true;$("compStatus").textContent=L("Claude מנסח…","Claude is drafting…");
+  var en=l.lang==="English";
+  var prompt="You draft a short email for Emilia from MW Photo Tours (nature and wildlife photography expeditions, Israel-based). "+
+    "Write in "+(en?"English":"natural modern Hebrew (not translated)")+". Warm, clear, direct, no clichés, no exclamation overload. "+
+    "Never invent prices, dates, seats, species or terms: where a fact is needed write a bracketed placeholder like [מחיר] or [dates]. "+
+    "Sign as Emilia, MW Photo Tours. Return JSON {\"subject\":\"...\",\"body\":\"...\"} only.\n\n"+
+    "Lead: first name "+String(l.name).split(" ")[0]+"; interested in: "+(l.interest||"unknown")+"; stage: "+(STAGE_BY[l.status]?STAGE_BY[l.status].key:l.status)+
+    "; came in "+ago(l.created)+".\nEmilia's notes or current draft:\n"+$("compBody").value.slice(0,1500);
+  try{
+    var r=await S.sample.json(prompt,{modelTier:"default",cache:false});
+    if(r&&r.body){$("compBody").value=r.body;if(r.subject)$("compSubj").value=r.subject}
+    $("compStatus").textContent=L("טיוטה מוכנה. לקרוא ולתקן לפני ששומרים.","Draft ready. Read and fix it before saving.");
+  }catch(e){$("compStatus").textContent=e&&e.code==="not_granted"?L("Claude לא זמין בדף הזה.","Claude isn't available on this page."):L("Claude לא הצליח לנסח כרגע.","Claude couldn't draft right now.")}
+  btn.disabled=false;
+}
+async function saveDraft(){
+  var to=$("compTo").value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)){$("compStatus").textContent=L("כתובת המייל לא תקינה.","That email address isn't valid.");return}
+  var btn=$("compSave");btn.disabled=true;$("compStatus").textContent=L("שומרת…","Saving…");
+  try{
+    var p=await call(GMAIL,"create_draft",{to:[to],subject:$("compSubj").value,body:$("compBody").value});
+    var l=S.draftLead;
+    if(l)call(MONDAY,"create_update",{itemId:+l.id,body:"<p>טיוטת מייל נשמרה ב-Gmail: "+esc($("compSubj").value)+"</p>"}).catch(function(){});
+    closeComposer();
+    var link=p&&p.viewUrl?'<a href="'+esc(p.viewUrl)+'" target="_blank" rel="noopener">'+L("פתחי ב-Gmail","Open in Gmail")+'</a>':"";
+    toast(L("הטיוטה נשמרה ב-Gmail","Draft saved in Gmail"),link);
+  }catch(e){$("compStatus").textContent=errText(e,GMAIL);btn.disabled=false}
+}
+
+/* ---------- ask claude ---------- */
+async function ask(){
+  var q=$("askInput").value.trim();if(!q)return;
+  var out=$("askOut");out.hidden=false;
+  if(!S.sample){out.textContent=L("Claude לא זמין בתצוגה הזו של הדף.","Claude isn't available in this view of the page.");return}
+  $("askBtn").disabled=true;out.textContent=L("חושב…","Thinking…");
+  var ctx={today:todayISO(),
+    leads:S.leads.slice(0,200).map(function(l){return{name:l.name,stage:l.status,interest:l.interest,created:l.created.slice(0,10),followUp:l.fu}}),
+    tasks:openTasks().map(function(t){return{task:t.name,status:t.status,due:t.due,priority:t.pri}}),
+    tours:S.tours.map(function(t){var s=tourStats(t);return{tour:t.full,start:t.start,capacity:t.cap,registered:s.n,fullyPaid:s.paid,deposit:s.deposit,agreementOk:s.agree,agreementToSend:s.toSend,insurance:s.ins,flights:s.flights,whatsapp:s.wa,prepGuide:s.prep}})};
+  var prompt="You help Emilia, who runs leads, clients and registrations at MW Photo Tours. Answer in "+L("Hebrew","English")+", short and practical, as a list of next steps when useful. "+
+    "Use only the data below (live from monday). If something is not in the data, say so. Do not invent facts. Nothing is sent to clients without approval.\n\nDATA:\n"+JSON.stringify(ctx)+"\n\nQUESTION:\n"+q;
+  try{await S.sample(prompt,{modelTier:"default",cache:false,onText:function(e){out.textContent=e.text}})}
+  catch(e){out.textContent=e&&e.code==="rate_limited"?L("יותר מדי בקשות. נסי שוב בעוד דקה.","Too many requests. Try again in a minute."):(e&&e.text)||L("Claude לא הצליח לענות כרגע.","Claude couldn't answer right now.")}
+  $("askBtn").disabled=false;
+}
+
+/* ---------- tabs ---------- */
+function showTab(name){
+  ["today","leads","tasks","tours","sales","help"].forEach(function(n){$("panel-"+n).hidden=n!==name;$("tab-"+n).setAttribute("aria-selected",String(n===name))});
+  store("emilia.tab",name);
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-act],[data-tab],[data-goto],[data-view]");if(!t)return;
+  if(t.dataset.tab){showTab(t.dataset.tab);return}
+  if(t.dataset.goto){if(t.dataset.viewSet){S.view=t.dataset.viewSet;S.limit=15}showTab(t.dataset.goto);renderLeads();window.scrollTo({top:0});return}
+  if(t.dataset.view){S.view=t.dataset.view;S.limit=15;S.q="";$("leadSearch").value="";renderLeads();return}
+  var a=t.dataset.act,l=t.dataset.id&&findLead(t.dataset.id);
+  if(a==="copy"){var v=t.dataset.v;(navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(function(){toast(L("הועתק: ","Copied: ")+v)},function(){toast(v)});return}
+  if(a==="more"){S.limit+=15;renderLeads();return}
+  if(a==="campedit"){S.campEdit=!S.campEdit;renderCamps();if(S.campEdit)$("campName").focus();return}
+  if(a==="campdel"){var keep=S.camps.filter(function(c){return c.id!==t.dataset.cid});saveCamps(keep,L("הקמפיין הוסר","Campaign removed"));return}
+  if(a==="toggle"){var k=t.dataset.key,o=!S.open[k];S.open[k]=o;t.setAttribute("aria-expanded",String(o));t.nextElementSibling.hidden=!o;return}
+  if(!l)return;
+  if(a==="noanswer")setLead(l,{status:"Attempted",fu:plusDays(1)},"ניסיון התקשרות, לא ענה/תה ("+fmtDay(todayISO())+"). פולואפ מחר.",t);
+  else if(a==="talked")setLead(l,{status:"Contacted"},"דיברנו ("+fmtDay(todayISO())+").",t);
+  else if(a==="fu"){var fr=t.closest(".lead-more").querySelector(".fu-row");fr.hidden=!fr.hidden;if(!fr.hidden)fr.querySelector("input").focus()}
+  else if(a==="fucancel"){t.closest(".fu-row").hidden=true}
+  else if(a==="fusave"){var inp=t.parentNode.querySelector("input[type=date]");if(!inp.value){inp.focus();return}setLead(l,{status:"Follow-Up Needed",fu:inp.value},"נקבע פולואפ ל-"+fmtDay(inp.value)+".",t)}
+  else if(a==="draft")openComposer(l);
+});
+document.addEventListener("change",function(e){
+  var t=e.target;if(t.dataset&&t.dataset.act==="taskdone"){var task=S.tasks.find(function(x){return x.id===t.dataset.id});if(task)setTaskDone(task,t.checked,t)}
+});
+$("leadSearch").addEventListener("input",function(e){S.q=e.target.value;S.limit=15;renderLeads()});
+$("refreshBtn").addEventListener("click",loadAll);
+$("campForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  var name=$("campName").value.trim(),keys=$("campKeys").value.split(/[,،]/).map(function(k){return k.trim()}).filter(Boolean);
+  if(!name||!keys.length)return;
+  var c={id:"c"+Date.now().toString(36),name:name,keywords:keys};
+  saveCamps(S.camps.concat([c]),L("הקמפיין נוסף","Campaign added")).then(function(ok){if(ok){$("campName").value="";$("campKeys").value=""}});
+});
+async function saveCamps(list,msg){
+  if(!S.db)return false;
+  try{await S.db.doc("config/campaigns").set({list:list,updatedAt:new Date().toISOString()});toast(msg);return true}
+  catch(err){toast(err&&err.code==="resource_exhausted"?L("יותר מדי שינויים ברצף. נסי שוב בעוד רגע.","Too many changes in a row. Try again in a moment."):L("השמירה לא הצליחה. נסי שוב.","Saving didn't work. Try again."));return false}
+}
+$("compClose").addEventListener("click",closeComposer);
+$("composer").addEventListener("click",function(e){if(e.target===$("composer"))closeComposer()});
+$("composer").addEventListener("keydown",function(e){if(e.key==="Escape")closeComposer()});
+$("compSave").addEventListener("click",saveDraft);
+$("compAi").addEventListener("click",aiDraft);
+$("askBtn").addEventListener("click",ask);
+$("askInput").addEventListener("keydown",function(e){if(e.key==="Enter"&&(e.metaKey||e.ctrlKey))ask()});
+$("addTask").addEventListener("submit",async function(e){
+  e.preventDefault();var name=$("newTaskName").value.trim();if(!name)return;
+  var btn=e.target.querySelector("button");btn.disabled=true;
+  var cols={};cols[C.tStatus]={label:"לעשות"};cols[C.tPri]={label:$("newTaskPri").value};if($("newTaskDate").value)cols[C.tDate]={date:$("newTaskDate").value};
+  try{
+    await call(MONDAY,"create_item",{boardId:B.tasks,groupId:"topics",name:name,columnValues:JSON.stringify(cols)});
+    $("newTaskName").value="";$("newTaskDate").value="";
+    await loadTasks();renderAll();toast(L("המשימה נוספה ל-monday","Task added to monday"));
+  }catch(err){toast(errText(err,MONDAY))}
+  btn.disabled=false;
+});
+
+/* ---------- boot ---------- */
+function renderGlobal(){
+  var g=$("globalNote");
+  if(S.gnote==="noclaude")g.innerHTML='<div class="note info">'+L("הדף צריך להיפתח בתוך Claude כדי להתחבר ל-monday ול-Gmail.","This page needs to be opened inside Claude to connect to monday and Gmail.")+'</div>';
+  else if(S.gnote==="nomcp")g.innerHTML='<div class="note info">'+L("החיבורים ל-monday ול-Gmail לא זמינים בתצוגה הזו. פותחים את הדף ב-Claude כשהחיבורים מחוברים.","The monday and Gmail connections aren't available in this view. Open the page in Claude with the connectors connected.")+'</div>';
+  else g.innerHTML="";
+  if(S.gnote)$("syncText").textContent=L("לא מחובר","Not connected");
+  else if(S.syncedAt)syncLabel();
+  else if(!$("refreshBtn").disabled)$("syncText").textContent=L("מתחבר…","Connecting…");
+}
+$("langBtn").addEventListener("click",function(){
+  EN=!EN;store("emilia.lang",EN?"en":"he");
+  applyLang();header();renderGlobal();renderAll();
+  if(!$("composer").hidden&&S.draftLead)$("compTitle").textContent=L("טיוטת מייל ל","Email draft for ")+S.draftLead.name;
+});
+applyLang();header();renderGlobal();renderMood();
+var saved=store("emilia.tab");if(saved&&$("panel-"+saved))showTab(saved);
+setInterval(function(){header();syncLabel()},60000);
+(async function(){
+  var c=window.claude;
+  if(!c||!c.use){S.gnote="noclaude";renderGlobal();return}
+  var res=await Promise.all([c.use("mcp").catch(function(){return null}),c.use("sample").catch(function(){return null}),c.use("db").catch(function(){return null})]);
+  S.mcp=res[0];S.sample=res[1];S.db=res[2];
+  if(S.db){
+    S.db.doc("config/campaigns").onSnapshot(function(snap){
+      var d=snap.exists?snap.data():null;
+      S.camps=d&&Array.isArray(d.list)?d.list.filter(function(x){return x&&x.id&&x.name}):[];
+      S.campsLoaded=true;renderAll();
+    },function(){S.campsLoaded=true;renderAll()});
+  }else{S.campsLoaded=true}
+  renderCamps();
+  if(!S.mcp){S.gnote="nomcp";renderGlobal();["todayList","leadList","taskList","todayTasks","tourList"].forEach(function(id){$(id).innerHTML=""});return}
+  await loadAll();
+  setInterval(function(){if(!document.hidden)loadAll()},5*60000);
+})();
+})();
+</script>
+
+
+</body></html>
